@@ -200,6 +200,7 @@ const css = `
 }
 .specCard{
   position: relative;
+  z-index: 0;
   border-radius: 22px;
   min-height: 220px;
   padding: 20px 18px 18px;
@@ -208,6 +209,13 @@ const css = `
   justify-content: space-between;
   overflow: hidden;
   box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.32s ease;
+}
+.specCard:hover{
+  z-index: 2;
+  transform: translate3d(0, -10px, 0) scale(1.07);
+  box-shadow: 0 26px 50px rgba(0,0,0,0.18);
 }
 .specCardArt{
   flex: 1;
@@ -237,7 +245,15 @@ const css = `
   text-shadow: none;
 }
 @media (prefers-reduced-motion: reduce){
-  .specCard{ box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+  .specCard{
+    transition: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  }
+  .specCard:hover{
+    z-index: 0;
+    transform: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  }
 }
 `;
 
