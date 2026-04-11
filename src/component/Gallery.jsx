@@ -34,7 +34,7 @@ const css = `
 .galleryViewport{
   overflow: hidden;
   width: 100%;
-  height: 424px;
+  height: clamp(260px, 52vw, 424px);
   line-height: 0;
 }
 .galleryHeroWrap{
@@ -42,7 +42,7 @@ const css = `
 }
 .galleryHero{
   width: 100%;
-  height: 424px;
+  height: clamp(260px, 52vw, 424px);
   display: block;
   object-fit: cover;
   object-position: center;

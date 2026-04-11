@@ -38,7 +38,9 @@ const css = `
 .testimonialLeadInner{
   max-width: 1120px;
   margin: 0 auto;
-  padding: 72px 24px 80px;
+  padding: 72px clamp(16px, 4vw, 24px) 80px;
+  box-sizing: border-box;
+  width: 100%;
 }
 .testimonialLeadContainer{
   display: flex;
@@ -66,6 +68,10 @@ const css = `
   text-align: left;
 }
 @media (max-width: 768px){
+  .testimonialLeadInner{
+    padding-top: 48px;
+    padding-bottom: 56px;
+  }
   .testimonialLeadContainer{
     flex-direction: column;
     align-items: stretch;

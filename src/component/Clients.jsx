@@ -9,25 +9,25 @@ import aquawhiteLogo from "../assets/aquawhite.webp";
 import acubeLogo from "../assets/acube.webp";
 
 function Clients() {
-    return (
-    <div style={styles.container}>
+  return (
+    <div className="clientsRoot">
       <style>{css}</style>
-      <div style={styles.inner}>
-        <div style={styles.left}>
-          <div style={styles.kickerWrap}>
-            <p style={styles.kicker}>Client list</p>
-            <div style={styles.kickerLine} />
+      <div className="clientsInner">
+        <div className="clientsLeft">
+          <div className="clientsKickerWrap">
+            <p className="clientsKicker">Client list</p>
+            <div className="clientsKickerLine" />
           </div>
 
-          <h2 style={styles.title}>Not just clients, they are more like partners</h2>
+          <h2 className="clientsTitle">Not just clients, they are more like partners</h2>
 
-          <button style={styles.cta} type="button">
+          <button className="clientsCta" type="button">
             News &amp; Awards
           </button>
         </div>
 
-        <div style={styles.right}>
-          <div style={styles.grid}>
+        <div className="clientsRight">
+          <div className="clientsLogoGrid">
             {[
               { label: "Jeep", src: jeepLogo },
               { label: "Yatra", src: yatraLogo },
@@ -39,23 +39,15 @@ function Clients() {
               { label: "Aquawhite", src: aquawhiteLogo },
               { label: "Acube", src: acubeLogo },
             ].map((item, idx) => (
-              <div
-                style={{
-                  ...styles.logoCell,
-                  borderRight: idx % 3 !== 2 ? styles.divider.borderColor : "none",
-                  borderBottom: idx < 6 ? styles.divider.borderColor : "none",
-                }}
-                key={item.label}
-              >
+              <div className="clientsLogoCell" key={item.label}>
                 <div
-                  className="logoPop"
+                  className="logoPop clientsLogoBox"
                   style={{
-                    ...styles.logoBox,
                     "--delay": `${idx * 90}ms`,
                     animationDelay: `${idx * 90}ms`,
                   }}
                 >
-                  <img src={item.src} alt={item.label} style={styles.logoImg} />
+                  <img src={item.src} alt={item.label} className="clientsLogoImg" />
                 </div>
               </div>
             ))}
@@ -63,111 +55,148 @@ function Clients() {
         </div>
       </div>
     </div>
-    );
-  }
-  
-  const styles = {
-    container: {
-      background: "radial-gradient(900px 600px at 20% 20%, rgba(255,255,255,0.08), transparent 60%), #000",
-      color: "white",
-      padding: "80px 40px",
-      position: "relative",
-    },
-    inner: {
-      maxWidth: "1120px",
-      margin: "0 auto",
-      display: "grid",
-      gridTemplateColumns: "minmax(260px, 1fr) minmax(320px, 1.2fr)",
-      gap: "48px",
-      alignItems: "center",
-    },
-    left: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "flex-start",
-      gap: "18px",
-    },
-    kickerWrap: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "flex-start",
-      gap: "10px",
-    },
-    kicker: {
-      margin: 0,
-      fontSize: "12px",
-      letterSpacing: "1.8px",
-      textTransform: "uppercase",
-      color: "rgba(255,255,255,0.7)",
-    },
-    kickerLine: {
-      width: "44px",
-      height: "2px",
-      background: "rgba(255,255,255,0.35)",
-    },
-    title: {
-      margin: 0,
-      fontSize: "44px",
-      lineHeight: 1.12,
-      fontWeight: 500,
-      maxWidth: "420px",
-      color: "#f3f4f6",
-      letterSpacing: "-0.02em",
-    },
-    cta: {
-      background: "transparent",
-      color: "white",
-      border: "1px solid rgba(255,255,255,0.35)",
-      padding: "12px 18px",
-      borderRadius: "999px",
-      cursor: "pointer",
-      fontSize: "13px",
-    },
-    right: {},
-    grid: {
-      display: "grid",
-      gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-      gap: 0,
-    },
-    logoCell: {
-      position: "relative",
-      minHeight: "140px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: "22px",
-      borderRight: "1px solid rgba(255,255,255,0.14)",
-      borderBottom: "1px solid rgba(255,255,255,0.14)",
-    },
-    divider: {
-      borderColor: "1px solid rgba(255,255,255,0.14)",
-    },
-    logoBox: {
-      width: "220px",
-      maxWidth: "100%",
-      height: "96px",
-      background: "#f3f4f6",
-      color: "#111827",
-      borderRadius: "8px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      fontWeight: 600,
-      letterSpacing: "0.2px",
-      padding: 0,
-    },
-    logoImg: {
-      width: "100%",
-      height: "100%",
-      objectFit: "contain",
-      display: "block",
-      filter: "grayscale(0.05) contrast(1.05)",
-    },
-  };
-  
-  export default Clients;
+  );
+}
 
 const css = `
+.clientsRoot{
+  background: radial-gradient(900px 600px at 20% 20%, rgba(255,255,255,0.08), transparent 60%), #000;
+  color: #fff;
+  padding: 80px clamp(16px, 4vw, 40px);
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: clip;
+}
+@media (max-width: 640px){
+  .clientsRoot{
+    padding: 48px 16px;
+  }
+}
+.clientsInner{
+  max-width: 1120px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: clamp(28px, 5vw, 48px);
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+}
+@media (max-width: 900px){
+  .clientsInner{
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+}
+.clientsLeft{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  min-width: 0;
+}
+@media (max-width: 900px){
+  .clientsLeft{
+    align-items: center;
+    text-align: center;
+  }
+  .clientsKickerWrap{
+    align-items: center;
+  }
+}
+.clientsKickerWrap{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+.clientsKicker{
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+}
+.clientsKickerLine{
+  width: 44px;
+  height: 2px;
+  background: rgba(255,255,255,0.35);
+}
+.clientsTitle{
+  margin: 0;
+  font-size: clamp(1.65rem, 4.2vw, 2.75rem);
+  line-height: 1.12;
+  font-weight: 500;
+  max-width: 420px;
+  color: #f3f4f6;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 900px){
+  .clientsTitle{
+    max-width: 100%;
+  }
+}
+.clientsCta{
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.35);
+  padding: 12px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.clientsRight{
+  min-width: 0;
+  width: 100%;
+}
+.clientsLogoGrid{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  width: 100%;
+  background: rgba(255,255,255,0.14);
+  border-radius: 12px;
+  overflow: hidden;
+}
+@media (max-width: 520px){
+  .clientsLogoGrid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.clientsLogoCell{
+  position: relative;
+  min-height: clamp(100px, 22vw, 140px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(12px, 3.5vw, 22px);
+  background: rgba(0,0,0,0.35);
+  box-sizing: border-box;
+}
+.clientsLogoBox{
+  width: 220px;
+  max-width: 100%;
+  height: 96px;
+  background: #f3f4f6;
+  color: #111827;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  padding: 0;
+}
+.clientsLogoImg{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  filter: grayscale(0.05) contrast(1.05);
+}
 .logoPop{
   opacity: 0;
   transform: translateY(6px) scale(0.985);
@@ -187,3 +216,5 @@ const css = `
   .logoPop{ animation: none; opacity: 1; transform: none; }
 }
 `;
+
+export default Clients;
