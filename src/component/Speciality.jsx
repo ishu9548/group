@@ -1,3 +1,5 @@
+import React from "react";
+
 function BrandingArt() {
   return (
     <svg className="specArt" viewBox="0 0 120 100" aria-hidden>
@@ -117,9 +119,9 @@ const SPECIALITY_COLUMNS = [
   ],
 ];
 
-function SpecCard({ title, bg, art: Art, titleOnLight }) {
+function SpecCard({ title, bg, art: Art, titleOnLight, delay = 0 }) {
   return (
-    <article className="specCard" style={{ background: bg }}>
+    <article className="specCard" style={{ background: bg, "--delay": `${delay}ms` }}>
       <div className="specCardArt">
         <Art />
       </div>
@@ -129,8 +131,31 @@ function SpecCard({ title, bg, art: Art, titleOnLight }) {
 }
 
 function Speciality() {
+  const [inView, setInView] = React.useState(false);
+  const sectionRef = React.useRef(null);
+
+  React.useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    if (inView) return;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry?.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { root: null, threshold: 0.18, rootMargin: "0px 0px -10% 0px" }
+    );
+
+    io.observe(el);
+    return () => io.disconnect();
+  }, [inView]);
+
   return (
-    <section className="specialitySection">
+    <section ref={sectionRef} className={inView ? "specialitySection isVisible" : "specialitySection"}>
       <style>{css}</style>
 
       <div className="specialityInner">
@@ -151,8 +176,8 @@ function Speciality() {
         <div className="cardGridStagger">
           {SPECIALITY_COLUMNS.map((column, colIdx) => (
             <div className={`specCol specCol--${colIdx + 1}`} key={colIdx}>
-              {column.map((card) => (
-                <SpecCard key={card.title} {...card} />
+              {column.map((card, idx) => (
+                <SpecCard key={card.title} {...card} delay={(colIdx * 2 + idx) * 90} />
               ))}
             </div>
           ))}
@@ -188,6 +213,7 @@ const css = `
   filter: blur(28px);
   opacity: 0.9;
   transform: translate3d(0,0,0);
+  animation: blobFloat 9s ease-in-out infinite;
 }
 .specialityBlob--1{
   width: 420px;
@@ -202,6 +228,7 @@ const css = `
   right: -220px;
   top: -80px;
   background: radial-gradient(circle at 30% 30%, rgba(34,211,238,0.32), rgba(34,211,238,0) 62%);
+  animation-duration: 11s;
 }
 .specialityGrid{
   position: absolute;
@@ -218,6 +245,8 @@ const css = `
   margin: 0 auto 44px;
   max-width: 760px;
   position: relative;
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
 }
 .specialityEyebrow{
   margin: 0 0 10px;
@@ -293,6 +322,9 @@ const css = `
   border: 1px solid rgba(255,255,255,0.36);
   transform: translate3d(0, 0, 0);
   transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s ease, filter 0.28s ease;
+  opacity: 0;
+  transform: translate3d(0, 18px, 0) scale(0.98);
+  will-change: transform, opacity;
 }
 .specCard::before{
   content: "";
@@ -339,7 +371,11 @@ const css = `
   width: min(100%, 140px);
   height: auto;
   max-height: 120px;
+  animation: artBob 3.8s ease-in-out infinite;
 }
+.specCol:nth-child(2) .specArt{ animation-duration: 4.2s; }
+.specCol:nth-child(3) .specArt{ animation-duration: 3.6s; }
+.specCol:nth-child(4) .specArt{ animation-duration: 4.6s; }
 .specCardTitle{
   margin: 0;
   font-size: 15px;
@@ -357,15 +393,67 @@ const css = `
   color: #0f172a;
   text-shadow: none;
 }
+
+/* Reveal animations (triggered by IntersectionObserver) */
+.specialitySection.isVisible .specialityHeader{
+  animation: fadeUp 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.specialitySection.isVisible .specCard{
+  animation: cardIn 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--delay, 0ms);
+}
+.specialitySection.isVisible .specialityGrid{
+  animation: gridIn 900ms ease both;
+}
+
+@keyframes fadeUp{
+  from{ opacity: 0; transform: translate3d(0, 18px, 0); }
+  to{ opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes cardIn{
+  0%{ opacity: 0; transform: translate3d(0, 18px, 0) scale(0.98); }
+  60%{ opacity: 1; transform: translate3d(0, 0, 0) scale(1.015); }
+  100%{ opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes gridIn{
+  from{ opacity: 0; transform: translate3d(0, 10px, 0); }
+  to{ opacity: 0.55; transform: translate3d(0, 0, 0); }
+}
+@keyframes blobFloat{
+  0%,100%{ transform: translate3d(0,0,0) scale(1); }
+  50%{ transform: translate3d(0, -14px, 0) scale(1.03); }
+}
+@keyframes artBob{
+  0%,100%{ transform: translate3d(0,0,0); }
+  50%{ transform: translate3d(0, -6px, 0); }
+}
+
 @media (prefers-reduced-motion: reduce){
   .specCard{
     transition: none;
     box-shadow: 0 6px 16px rgba(2,6,23,0.10);
+    opacity: 1;
+    transform: none;
   }
   .specCard:hover{
     z-index: 0;
     transform: none;
     box-shadow: 0 6px 16px rgba(2,6,23,0.10);
+  }
+  .specialityHeader{
+    opacity: 1;
+    transform: none;
+  }
+  .specialityGrid{
+    opacity: 0.55;
+    transform: none;
+    animation: none;
+  }
+  .specialityBlob{
+    animation: none;
+  }
+  .specArt{
+    animation: none;
   }
 }
 `;
