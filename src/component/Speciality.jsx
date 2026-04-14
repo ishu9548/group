@@ -130,11 +130,24 @@ function SpecCard({ title, bg, art: Art, titleOnLight }) {
 
 function Speciality() {
   return (
-    <section style={styles.section}>
+    <section className="specialitySection">
       <style>{css}</style>
 
       <div className="specialityInner">
-        <h2 className="specialityTitle">Our Speciality</h2>
+        <div className="specialityBg" aria-hidden>
+          <span className="specialityBlob specialityBlob--1" />
+          <span className="specialityBlob specialityBlob--2" />
+          <span className="specialityGrid" />
+        </div>
+
+        <header className="specialityHeader">
+          <p className="specialityEyebrow">What we do best</p>
+          <h2 className="specialityTitle">Our Speciality</h2>
+          <p className="specialitySub">
+            End-to-end marketing solutions designed to grow visibility, drive qualified leads, and improve conversions.
+          </p>
+        </header>
+
         <div className="cardGridStagger">
           {SPECIALITY_COLUMNS.map((column, colIdx) => (
             <div className={`specCol specCol--${colIdx + 1}`} key={colIdx}>
@@ -150,29 +163,94 @@ function Speciality() {
 }
 
 const css = `
+.specialitySection{
+  position: relative;
+  width: 100%;
+  background:
+    radial-gradient(1200px 600px at 10% 0%, rgba(124,58,237,0.14), rgba(124,58,237,0) 55%),
+    radial-gradient(900px 520px at 90% 20%, rgba(34,211,238,0.18), rgba(34,211,238,0) 50%),
+    linear-gradient(180deg, #fafafa, #f4f4f5);
+  overflow: hidden;
+}
 .specialityInner{
   max-width: 1200px;
   margin: 0 auto;
-  padding: 56px 24px 88px;
+  padding: 72px 24px 96px;
+  position: relative;
+}
+.specialityBg{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.specialityBlob{
+  position: absolute;
+  filter: blur(28px);
+  opacity: 0.9;
+  transform: translate3d(0,0,0);
+}
+.specialityBlob--1{
+  width: 420px;
+  height: 420px;
+  left: -140px;
+  top: 60px;
+  background: radial-gradient(circle at 30% 30%, rgba(124,58,237,0.38), rgba(124,58,237,0) 60%);
+}
+.specialityBlob--2{
+  width: 520px;
+  height: 520px;
+  right: -220px;
+  top: -80px;
+  background: radial-gradient(circle at 30% 30%, rgba(34,211,238,0.32), rgba(34,211,238,0) 62%);
+}
+.specialityGrid{
+  position: absolute;
+  inset: -1px;
+  background:
+    linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px);
+  background-size: 52px 52px;
+  mask-image: radial-gradient(closest-side at 50% 20%, rgba(0,0,0,0.75), rgba(0,0,0,0));
+  opacity: 0.55;
+}
+.specialityHeader{
+  text-align: center;
+  margin: 0 auto 44px;
+  max-width: 760px;
+  position: relative;
+}
+.specialityEyebrow{
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(15, 23, 42, 0.66);
 }
 .specialityTitle{
-  margin: 0 0 40px;
-  text-align: center;
-  font-size: clamp(28px, 4vw, 40px);
-  font-weight: 700;
-  color: #0a0a0a;
+  margin: 0;
+  font-size: clamp(30px, 4vw, 44px);
+  font-weight: 800;
+  color: #0f172a;
   letter-spacing: -0.02em;
+}
+.specialitySub{
+  margin: 14px auto 0;
+  font-size: clamp(14px, 1.4vw, 16px);
+  line-height: 1.7;
+  color: rgba(15, 23, 42, 0.72);
 }
 .cardGridStagger{
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 20px;
+  gap: 22px;
   align-items: start;
+  position: relative;
 }
 .specCol{
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 22px;
 }
 /* Staggered column starts: col 3 highest, cols 2 & 4 stepped down */
 .specCol--1{ padding-top: 24px; }
@@ -191,6 +269,9 @@ const css = `
   }
 }
 @media (max-width: 520px){
+  .specialityInner{
+    padding: 64px 18px 84px;
+  }
   .cardGridStagger{
     grid-template-columns: 1fr;
   }
@@ -208,14 +289,42 @@ const css = `
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
-  box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+  box-shadow: 0 12px 28px rgba(2,6,23,0.10);
+  border: 1px solid rgba(255,255,255,0.36);
   transform: translate3d(0, 0, 0);
-  transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.32s ease;
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s ease, filter 0.28s ease;
+}
+.specCard::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(600px 240px at 20% 0%, rgba(255,255,255,0.35), rgba(255,255,255,0) 55%),
+    radial-gradient(520px 240px at 80% 20%, rgba(255,255,255,0.22), rgba(255,255,255,0) 60%);
+  opacity: 0.9;
+  pointer-events: none;
+}
+.specCard::after{
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.45), rgba(255,255,255,0));
+  opacity: 0;
+  transition: opacity 0.28s ease;
+  pointer-events: none;
 }
 .specCard:hover{
   z-index: 2;
-  transform: translate3d(0, -10px, 0) scale(1.07);
-  box-shadow: 0 26px 50px rgba(0,0,0,0.18);
+  transform: translate3d(0, -10px, 0) scale(1.05);
+  box-shadow: 0 30px 60px rgba(2,6,23,0.18);
+  filter: saturate(1.06) contrast(1.03);
+}
+.specCard:hover::after{
+  opacity: 0.9;
+}
+.specCard:focus-within{
+  outline: 3px solid rgba(124,58,237,0.35);
+  outline-offset: 3px;
 }
 .specCardArt{
   flex: 1;
@@ -223,6 +332,8 @@ const css = `
   align-items: center;
   justify-content: center;
   pointer-events: none;
+  position: relative;
+  z-index: 1;
 }
 .specArt{
   width: min(100%, 140px);
@@ -232,13 +343,15 @@ const css = `
 .specCardTitle{
   margin: 0;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.25;
   color: #fff;
   text-align: left;
   align-self: flex-start;
   max-width: 85%;
   text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  position: relative;
+  z-index: 1;
 }
 .specCardTitle--ink{
   color: #0f172a;
@@ -247,22 +360,14 @@ const css = `
 @media (prefers-reduced-motion: reduce){
   .specCard{
     transition: none;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    box-shadow: 0 6px 16px rgba(2,6,23,0.10);
   }
   .specCard:hover{
     z-index: 0;
     transform: none;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    box-shadow: 0 6px 16px rgba(2,6,23,0.10);
   }
 }
 `;
-
-const styles = {
-  section: {
-    background: "#f4f4f5",
-    position: "relative",
-    width: "100%",
-  },
-};
 
 export default Speciality;
